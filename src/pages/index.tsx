@@ -7,7 +7,7 @@ const Home: NextPage = () => {
     const router = useRouter();
     const [user, isSessionDataLoading] = useSession();
 
-    if (!user) {
+    if (!user && typeof window !== 'undefined') {
         router.push('/login').then();
         return null;
     }

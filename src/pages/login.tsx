@@ -17,7 +17,7 @@ const Home: NextPage = () => {
         },
     });
 
-    if (user) {
+    if (user && typeof window !== 'undefined') {
         router.push('/').then();
         return null;
     }
@@ -27,7 +27,7 @@ const Home: NextPage = () => {
     return (
         <div
             className={cn(
-                'bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 h-screen',
+                'bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 h-screen px-3',
                 'flex items-center justify-center flex-col space-y-7'
             )}
         >
