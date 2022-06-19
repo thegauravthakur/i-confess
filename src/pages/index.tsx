@@ -3,7 +3,7 @@ import { signOut } from 'next-auth/react';
 import { useSession } from '../hooks/useSession';
 import { useRouter } from 'next/router';
 
-const Home: NextPage = () => {
+const HomePage: NextPage = () => {
     const router = useRouter();
     const [user, isSessionDataLoading] = useSession();
 
@@ -22,4 +22,4 @@ const Home: NextPage = () => {
     );
 };
 
-export default Home;
+export default HomePage;

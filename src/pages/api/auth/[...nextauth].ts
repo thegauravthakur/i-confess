@@ -14,7 +14,6 @@ export default NextAuth({
             clientSecret: process.env.GOOGLE_SECRET!,
         }),
     ],
-    secret: process.env.JWT_SECRET,
     events: {
         signIn: async ({ user, account }) => {
             if (['google', 'github'].includes(account.provider.toLowerCase())) {
