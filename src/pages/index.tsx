@@ -1,7 +1,8 @@
 import type { NextPage } from 'next';
-import { signOut } from 'next-auth/react';
 import { useSession } from '../hooks/useSession';
 import { useRouter } from 'next/router';
+import { NewConfessionInputBox } from '../components/NewConfessionInputBox';
+import { signOut } from 'next-auth/react';
 
 const HomePage: NextPage = () => {
     const router = useRouter();
@@ -16,8 +17,14 @@ const HomePage: NextPage = () => {
 
     return (
         <div>
-            <p>Home Page</p>
-            <button onClick={() => signOut()}>logout</button>
+            <button
+                onClick={async () => {
+                    await signOut();
+                }}
+            >
+                sign out
+            </button>
+            <NewConfessionInputBox />
         </div>
     );
 };

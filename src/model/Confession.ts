@@ -1,15 +1,13 @@
-import { Schema, model, models, Document } from 'mongoose';
+import { Schema, model, models } from 'mongoose';
 
 export interface Confession {
-    title: string;
     description: string;
-    author: string;
+    author: Schema.Types.ObjectId;
 }
 
 const ConfessionSchema = new Schema<Confession>({
-    title: String,
     description: String,
-    author: String,
+    author: { type: Schema.Types.ObjectId, ref: 'User' },
 });
 
 export default models.Confession || model('Confession', ConfessionSchema);
