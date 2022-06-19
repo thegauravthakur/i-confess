@@ -1,5 +1,5 @@
+import ConfessionSchema from './../model/Confession';
 import dbConnect from '../lib/db';
-import ConfessionSchema from '../model/Confession';
 
 export async function createNewConfession() {
     await dbConnect();

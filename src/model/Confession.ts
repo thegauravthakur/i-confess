@@ -6,7 +6,7 @@ export interface Confession {
     author: string;
 }
 
-export const ConfessionSchema = new Schema<Confession>({
+const ConfessionSchema = new Schema<Confession>({
     title: String,
     description: String,
     author: String,
