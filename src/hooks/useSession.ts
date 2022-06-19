@@ -36,5 +36,6 @@ export function useSession({
             router.push(redirectTo);
         },
     });
+
     return [query.data, query.status === 'loading'];
 }

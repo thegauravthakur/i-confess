@@ -2,8 +2,28 @@ import type { NextPage } from 'next';
 import { AiOutlineGoogle, AiOutlineGithub } from 'react-icons/ai';
 import cn from 'classnames';
 import { SocialLoginButton } from '../components/SocialLoginButton';
+import { useSession } from '../hooks/useSession';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
+import { signIn } from 'next-auth/react';
 
 const Home: NextPage = () => {
+    const router = useRouter();
+    const [loading, setLoading] = useState(false);
+    const [user, isSessionDataLoading] = useSession({
+        queryConfig: {
+            onSuccess: () => setLoading(false),
+            onError: () => setLoading(false),
+        },
+    });
+
+    if (user) {
+        router.push('/').then();
+        return null;
+    }
+
+    if (isSessionDataLoading) return null; // probably show a spinner/shimmer here
+
     return (
         <div
             className={cn(
@@ -18,11 +38,21 @@ const Home: NextPage = () => {
             </p>
             <SocialLoginButton
                 TrailingWidget={AiOutlineGoogle}
+                isLoading={loading}
                 text='Continue with Google'
+                onClick={async () => {
+                    setLoading(true);
+                    await signIn('google');
+                }}
             />
             <SocialLoginButton
                 TrailingWidget={AiOutlineGithub}
+                isLoading={loading}
                 text='Continue with GitHub'
+                onClick={async () => {
+                    setLoading(true);
+                    await signIn('github');
+                }}
             />
         </div>
     );
