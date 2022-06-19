@@ -7,9 +7,12 @@ export default async function createConfession(
     req: NextApiRequest,
     res: NextApiResponse<Confession | string>
 ) {
-    const { user } = await getSession({ req });
+    const session = await getSession({ req });
 
     const { description } = JSON.parse(req.body) as Omit<Confession, 'author'>;
-    const confession = await createNewConfession(description, user.email);
+    const confession = await createNewConfession(
+        description,
+        session?.user?.email ?? ''
+    );
     res.status(200).json(confession);
 }
