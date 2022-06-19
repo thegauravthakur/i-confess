@@ -1,6 +1,6 @@
 import { Schema, model, models, Document } from 'mongoose';
 
-export interface Confession extends Document {
+export interface Confession {
     title: string;
     description: string;
     author: string;
