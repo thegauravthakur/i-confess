@@ -1,3 +1,4 @@
+import { getCustomRoute } from 'next/dist/server/server-route-utils';
 import dbConnect from '../lib/db';
 import UserSchema, { User } from '../model/User';
 
@@ -9,4 +10,9 @@ export async function createMergeUser(user: User) {
         await newUser.save();
         return newUser;
     }
+}
+
+export async function getUserDetails(email: string) {
+    const user = await UserSchema.findOne({ email }).lean().exec();
+    return user;
 }

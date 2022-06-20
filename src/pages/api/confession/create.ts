@@ -14,5 +14,5 @@ export default async function createConfession(
         description,
         session?.user?.email ?? ''
     );
-    res.status(200).json(confession);
+    res.status(201).json(confession);
 }

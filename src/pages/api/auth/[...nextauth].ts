@@ -1,7 +1,7 @@
 import NextAuth from 'next-auth';
 import GithubProvider from 'next-auth/providers/github';
 import GoogleProvider from 'next-auth/providers/google';
-import { createMergeUser } from '../../../controller/user';
+import { createMergeUser, getUserDetails } from '../../../controller/user';
 
 export default NextAuth({
     providers: [
@@ -23,6 +23,16 @@ export default NextAuth({
                     email: user.email ?? '',
                 });
             }
+        },
+    },
+    callbacks: {
+        session: async ({ session, token }) => {
+            // check if we can reduce the call to this function by moving it to jwt callback
+            const { _id, __v, ...rest } = await getUserDetails(
+                token.email as string
+            );
+            session = { ...rest, id: _id };
+            return session;
         },
     },
 });

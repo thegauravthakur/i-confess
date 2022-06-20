@@ -6,7 +6,7 @@ import { RiArrowDropDownFill } from 'react-icons/ri';
 import { useMutation } from 'react-query';
 
 export function NewConfessionInputBox() {
-    const [session] = useSession();
+    const [user] = useSession();
     const mutation = useMutation((data: { description: string }) => {
         return fetch('/api/confession/create', {
             method: 'POST',
@@ -48,7 +48,8 @@ export function NewConfessionInputBox() {
                         alt='profile avatar'
                         className={cn('rounded-full')}
                         height={42}
-                        src={session?.user.image ?? ''}
+                        // @ts-ignore
+                        src={user?.avatar ?? ''}
                         width={42}
                     />
                 </button>
@@ -58,7 +59,8 @@ export function NewConfessionInputBox() {
                     )}
                     type='button'
                 >
-                    <span> {session?.user.name} </span>
+                    {/*  @ts-ignore */}
+                    <span> {user.name} </span>
                     <RiArrowDropDownFill fontSize={18} />
                 </button>
             </div>
