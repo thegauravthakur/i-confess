@@ -31,7 +31,7 @@ export default NextAuth({
             const { _id, __v, ...rest } = await getUserDetails(
                 token.email as string
             );
-            session = { ...rest, id: _id };
+            session.user = { ...rest, id: _id };
             return session;
         },
     },
