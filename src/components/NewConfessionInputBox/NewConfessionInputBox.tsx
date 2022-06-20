@@ -48,7 +48,6 @@ export function NewConfessionInputBox() {
                         alt='profile avatar'
                         className={cn('rounded-full')}
                         height={42}
-                        // @ts-ignore
                         src={session?.user?.avatar ?? ''}
                         width={42}
                     />

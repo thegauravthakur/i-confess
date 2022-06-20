@@ -5,12 +5,12 @@ import { SocialLoginButton } from '../components/SocialLoginButton';
 import { useSession } from '../hooks/useSession';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { signIn } from 'next-auth/react';
+import { getSession, signIn } from 'next-auth/react';
 
 const LoginPage: NextPage = () => {
     const router = useRouter();
     const [loading, setLoading] = useState(false);
-    const [user, isSessionDataLoading] = useSession({
+    const [user] = useSession({
         queryConfig: {
             onSuccess: () => setLoading(false),
             onError: () => setLoading(false),
@@ -19,10 +19,7 @@ const LoginPage: NextPage = () => {
 
     if (user && typeof window !== 'undefined') {
         router.push('/').then();
-        return null;
     }
-
-    if (isSessionDataLoading) return null; // probably show a spinner/shimmer here
 
     return (
         <div
@@ -57,5 +54,22 @@ const LoginPage: NextPage = () => {
         </div>
     );
 };
+
+export async function getServerSideProps(context: any) {
+    const session = await getSession(context);
+
+    if (session) {
+        return {
+            redirect: {
+                destination: '/',
+                permanent: false,
+            },
+        };
+    }
+
+    return {
+        props: {},
+    };
+}
 
 export default LoginPage;
