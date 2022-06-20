@@ -3,12 +3,14 @@ import { useSession } from '../hooks/useSession';
 import { useRouter } from 'next/router';
 import { NewConfessionInputBox } from '../components/NewConfessionInputBox';
 import { getSession, signOut } from 'next-auth/react';
-import { Session } from 'next-auth';
-import { log } from 'util';
+import { useState } from 'react';
+import ReactFocusLock from 'react-focus-lock';
 
 const HomePage: NextPage = ({
     userSession,
 }: InferGetStaticPropsType<typeof getServerSideProps>) => {
+    const [showNewConversationModal, setShowConversationModal] =
+        useState(false);
     const router = useRouter();
     const [user] = useSession({ queryConfig: { initialData: userSession } });
 
@@ -25,7 +27,27 @@ const HomePage: NextPage = ({
             >
                 sign out
             </button>
-            <NewConfessionInputBox />
+            <button
+                onClick={() => {
+                    setShowConversationModal(!showNewConversationModal);
+                }}
+            >
+                create conversation
+            </button>
+            {showNewConversationModal && (
+                <ReactFocusLock>
+                    <NewConfessionInputBox
+                        setShowNewConversationModal={setShowConversationModal}
+                    />
+                </ReactFocusLock>
+            )}
+            <button
+                onClick={() => {
+                    setShowConversationModal(!showNewConversationModal);
+                }}
+            >
+                one more
+            </button>
         </div>
     );
 };

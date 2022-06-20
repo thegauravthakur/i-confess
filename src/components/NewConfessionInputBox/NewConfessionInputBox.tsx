@@ -4,8 +4,14 @@ import { useSession } from '../../hooks/useSession';
 import Image from 'next/image';
 import { RiArrowDropDownFill } from 'react-icons/ri';
 import { useMutation } from 'react-query';
+import { Dispatch, SetStateAction, useEffect, useRef } from 'react';
 
-export function NewConfessionInputBox() {
+interface NewConfessionInputBoxProps {
+    setShowNewConversationModal: Dispatch<SetStateAction<boolean>>;
+}
+export function NewConfessionInputBox({
+    setShowNewConversationModal,
+}: NewConfessionInputBoxProps) {
     const [session] = useSession();
     const mutation = useMutation((data: { description: string }) => {
         return fetch('/api/confession/create', {
@@ -37,6 +43,10 @@ export function NewConfessionInputBox() {
                         'bg-gray-200 rounded-full p-2 box-content',
                         'hover:bg-gray-300'
                     )}
+                    type='button'
+                    onClick={() => {
+                        setShowNewConversationModal(false);
+                    }}
                 >
                     <AiOutlineClose fontSize={18} />
                 </button>
@@ -64,6 +74,7 @@ export function NewConfessionInputBox() {
                 </button>
             </div>
             <textarea
+                autoFocus
                 required
                 className={cn(
                     'w-full outline-none px-4 min-h-[100px] py-2.5 max-h-[300px] resize-none'
