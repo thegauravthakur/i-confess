@@ -1,6 +1,7 @@
 import type { InferGetStaticPropsType, NextPage } from 'next';
 import { useSession } from '../hooks/useSession';
 import { useRouter } from 'next/router';
+import cn from 'classnames';
 import { NewConfessionInputBox } from '../components/NewConfessionInputBox';
 import { getSession, signOut } from 'next-auth/react';
 import { useState } from 'react';
@@ -19,35 +20,31 @@ const HomePage: NextPage = ({
     }
 
     return (
-        <div>
-            <button
-                onClick={async () => {
-                    await signOut();
-                }}
+        <div className={cn('space-y-5')}>
+            <header className={cn('h-12 bg-gray-500')}></header>
+            <div
+                className={cn(
+                    'grid grid-cols-[1fr_600px_1fr] max-w-7xl mx-auto'
+                )}
             >
-                sign out
-            </button>
-            <button
-                onClick={() => {
-                    setShowConversationModal(!showNewConversationModal);
-                }}
-            >
-                create conversation
-            </button>
-            {showNewConversationModal && (
-                <ReactFocusLock>
-                    <NewConfessionInputBox
-                        setShowNewConversationModal={setShowConversationModal}
-                    />
-                </ReactFocusLock>
-            )}
-            <button
-                onClick={() => {
-                    setShowConversationModal(!showNewConversationModal);
-                }}
-            >
-                one more
-            </button>
+                <div className={cn('bg-amber-300')}>left</div>
+                <div className='flex flex-col'>
+                    <button onClick={() => signOut()}>Sign Out</button>
+                    <button onClick={() => setShowConversationModal(true)}>
+                        Create Confesssion
+                    </button>
+                    {showNewConversationModal && (
+                        <ReactFocusLock>
+                            <NewConfessionInputBox
+                                setShowNewConversationModal={
+                                    setShowConversationModal
+                                }
+                            />
+                        </ReactFocusLock>
+                    )}
+                </div>
+                <div className={cn('bg-pink-200')}>right</div>
+            </div>
         </div>
     );
 };
