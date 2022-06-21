@@ -14,3 +14,12 @@ export async function createNewConfession(description: string, email: string) {
     await confession.save();
     return confession;
 }
+
+export async function getAllConfessions() {
+    await dbConnect();
+    const allConfessions = await ConfessionSchema.find({}).lean().exec();
+    return allConfessions.map(({ _id, __v, ...rest }) => ({
+        ...rest,
+        id: _id,
+    }));
+}

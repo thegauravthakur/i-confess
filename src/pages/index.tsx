@@ -4,12 +4,20 @@ import { useRouter } from 'next/router';
 import cn from 'classnames';
 import { getSession, signOut } from 'next-auth/react';
 import { NewConfessionBox } from '../components/NewConfessionBox';
+import { getAllConfessions } from '../controller/confession';
+import { useQuery } from 'react-query';
+import { useConfessions } from '../hooks/useConfessions';
 
 const HomePage: NextPage = ({
     userSession,
+    initialConfessions,
 }: InferGetStaticPropsType<typeof getServerSideProps>) => {
     const router = useRouter();
     const [session] = useSession({ queryConfig: { initialData: userSession } });
+    const [confessions] = useConfessions({
+        queryConfig: { initialData: initialConfessions },
+    });
+    console.log(confessions);
 
     if (!session && typeof window !== 'undefined') {
         router.push('/login').then();
@@ -26,7 +34,17 @@ const HomePage: NextPage = ({
                 <div className={cn('bg-amber-300')}>left</div>
                 <div className='flex flex-col'>
                     <NewConfessionBox />
+                    {confessions?.map(({ id, description }) => (
+                        <p key={id}>{description}</p>
+                    ))}
                     <button onClick={() => signOut()}>Sign Out</button>
+                    <button
+                        onClick={async () => {
+                            await fetch('/api/confession/get');
+                        }}
+                    >
+                        test
+                    </button>
                 </div>
                 <div className={cn('bg-pink-200')}>right</div>
             </div>
@@ -35,7 +53,10 @@ const HomePage: NextPage = ({
 };
 
 export async function getServerSideProps(context: any) {
-    const userSession = await getSession(context);
+    const [userSession, confessions] = await Promise.all([
+        getSession(context),
+        getAllConfessions(),
+    ]);
 
     if (!userSession) {
         return {
@@ -47,7 +68,7 @@ export async function getServerSideProps(context: any) {
     }
 
     return {
-        props: { userSession },
+        props: { userSession, confessions: JSON.stringify(confessions) },
     };
 }
 
