@@ -2,46 +2,31 @@ import type { InferGetStaticPropsType, NextPage } from 'next';
 import { useSession } from '../hooks/useSession';
 import { useRouter } from 'next/router';
 import cn from 'classnames';
-import { NewConfessionInputBox } from '../components/NewConfessionInputBox';
 import { getSession, signOut } from 'next-auth/react';
-import { useState } from 'react';
-import ReactFocusLock from 'react-focus-lock';
+import { NewConfessionBox } from '../components/NewConfessionBox';
 
 const HomePage: NextPage = ({
     userSession,
 }: InferGetStaticPropsType<typeof getServerSideProps>) => {
-    const [showNewConversationModal, setShowConversationModal] =
-        useState(false);
     const router = useRouter();
-    const [user] = useSession({ queryConfig: { initialData: userSession } });
+    const [session] = useSession({ queryConfig: { initialData: userSession } });
 
-    if (!user && typeof window !== 'undefined') {
+    if (!session && typeof window !== 'undefined') {
         router.push('/login').then();
     }
 
     return (
-        <div className={cn('space-y-5')}>
+        <div className={cn('space-y-5 bg-slate-100 min-h-screen')}>
             <header className={cn('h-12 bg-gray-500')}></header>
             <div
                 className={cn(
-                    'grid grid-cols-[1fr_600px_1fr] max-w-7xl mx-auto'
+                    'grid grid-cols-[1fr_600px_1fr] max-w-7xl mx-auto gap-x-8'
                 )}
             >
                 <div className={cn('bg-amber-300')}>left</div>
                 <div className='flex flex-col'>
+                    <NewConfessionBox />
                     <button onClick={() => signOut()}>Sign Out</button>
-                    <button onClick={() => setShowConversationModal(true)}>
-                        Create Confesssion
-                    </button>
-                    {showNewConversationModal && (
-                        <ReactFocusLock>
-                            <NewConfessionInputBox
-                                setShowNewConversationModal={
-                                    setShowConversationModal
-                                }
-                            />
-                        </ReactFocusLock>
-                    )}
                 </div>
                 <div className={cn('bg-pink-200')}>right</div>
             </div>
