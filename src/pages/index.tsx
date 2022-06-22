@@ -5,7 +5,6 @@ import cn from 'classnames';
 import { getSession, signOut } from 'next-auth/react';
 import { NewConfessionBox } from '../components/NewConfessionBox';
 import { getAllConfessions } from '../controller/confession';
-import { useQuery } from 'react-query';
 import { useConfessions } from '../hooks/useConfessions';
 
 const HomePage: NextPage = ({
